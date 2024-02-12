@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="max-w-2xl mx-auto mt-7 mb-20 px-3 py-5">
+    <nav className="max-w-4xl mx-auto mt-7 mb-20 px-10 py-6">
       <ul className="flex items-center justify-between">
         <li className="text-gray-500 duration-200 font-semibold text-lg">
           <Link href={"/"}>Home</Link>

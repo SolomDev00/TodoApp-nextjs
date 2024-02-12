@@ -13,6 +13,8 @@ import { useState } from "react";
 import { AxiosError } from "axios";
 import { IErrorResponse } from "../../interface";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "../../../provider/store";
+import { setToken } from "../../../provider/token";
 
 interface IFormInput {
   name: string;
@@ -23,6 +25,8 @@ interface IFormInput {
 const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -36,8 +40,12 @@ const RegisterPage = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
     try {
-      const { status } = await axiosInstance.post("/auth/signup", data);
-      console.log(data);
+      const { status, data: resData } = await axiosInstance.post(
+        "/auth/signup",
+        data
+      );
+      console.log(resData);
+      dispatch(setToken(resData));
       if (status === 200) {
         toast.success("Register is done, you will navigate after 2 seconds!", {
           position: "bottom-center",
@@ -48,7 +56,6 @@ const RegisterPage = () => {
         }, 1500);
       }
     } catch (error) {
-      console.log(error);
       const errorObj = error as AxiosError<IErrorResponse>;
       const message = errorObj.response?.data.error.message;
       toast.error(`${message}`, {
@@ -75,17 +82,20 @@ const RegisterPage = () => {
   );
 
   return (
-    <div className="max-w-md mx-auto pt-11">
-      <h2 className="text-center mb-4 text-3xl font-semibold">
-        Register with new account!
+    <section className="w-[800px] mt-16 mx-auto">
+      <h2 className="text-[#3E1F7A] text-2xl pb-6">
+        Register with a new account!
       </h2>
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="w-[800px] space-y-3 mx-auto"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {renderRegisterForm}
         <Button fullWidth isLoading={isLoading}>
           Register
         </Button>
       </form>
-    </div>
+    </section>
   );
 };
 

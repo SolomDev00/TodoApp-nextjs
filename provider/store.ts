@@ -1,7 +1,5 @@
-"use client";
-
 import { configureStore } from "@reduxjs/toolkit";
-import tokenReducer from "./token/token";
+import tokenReducer from "./token";
 import { useDispatch } from "react-redux";
 
 const store = configureStore({

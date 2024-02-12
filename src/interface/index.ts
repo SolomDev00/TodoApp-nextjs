@@ -1,3 +1,5 @@
+import { ITodoNameSchema } from "@/types";
+
 export interface IRegisterInput {
   name: "name" | "email" | "password";
   placeholder: string;
@@ -12,7 +14,7 @@ export interface IRegisterInput {
 }
 
 export interface ILoginInput {
-  name: "name" | "password";
+  name: "email" | "password";
   placeholder: string;
   type: string;
   forl: string;
@@ -25,27 +27,32 @@ export interface ILoginInput {
 }
 
 export interface IErrorResponse {
+  message?: string[];
   error: {
-    details?: {
-      errors: {
-        message: string;
-      }[];
-    };
     message?: string;
+    details?: {
+      message?: string;
+      errors: {}[];
+    };
   };
 }
 
 export interface ITodo {
-  id: number;
+  _id?: string | undefined;
   title: string;
   description: string;
+  createdAt?: string;
+  category: "Volley" | "School" | "Study" | "Developing";
+  user?: string;
 }
 
-export interface IPrimeData {
+export interface ITodoAdd {
   id?: string | undefined;
-  icon: string;
   title: string;
   description: string;
+  createdAt?: string;
+  category: "Volley" | "School" | "Study" | "Developing";
+  user?: string;
 }
 
 export interface IToken {
@@ -53,4 +60,16 @@ export interface IToken {
   user: {
     username: string;
   };
+}
+
+export interface ICategory {
+  id?: string | undefined;
+  name: string;
+}
+
+export interface IFormInputs {
+  id: string;
+  type: string;
+  name: ITodoNameSchema;
+  label: string;
 }

@@ -15,11 +15,11 @@ import { IErrorResponse } from "../../interface";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-// import { useAppDispatch } from "../../redux/store";
-// import { setToken } from "../../redux/token/token";
+import { useAppDispatch } from "../../../provider/store";
+import { setToken } from "../../../provider/token";
 
 interface IFormInput {
-  name: string;
+  email: string;
   password: string;
 }
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
 
   // ** Cookies
   const cookie = new Cookies();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -49,20 +49,27 @@ const LoginPage = () => {
         data
       );
       console.log(resData);
-      if (status === 200) {
+      dispatch(setToken(resData.token));
+      cookie.set("userLogged", resData.token);
+      if (status === 200 || 201) {
         toast.success("Login is done, you will navigate after 2 seconds!", {
           position: "bottom-center",
           duration: 4000,
         });
-        // dispatch(setToken(resData));
-        // cookie.set("userLogged", resData);
         setTimeout(() => {
           router.push("/");
         }, 2000);
       }
     } catch (error) {
+      console.log(error);
       const errorObj = error as AxiosError<IErrorResponse>;
-      const message = errorObj.response?.data.error.message;
+      const message =
+        errorObj.response?.data.error.details?.message ||
+        errorObj.response?.data.message;
+      toast.error(`Login failed: ${message}`);
+      if (message === "Invalid email or password") {
+        alert("Login failed: Invalid email or password");
+      }
       toast.error(`${message}`, {
         position: "bottom-center",
         duration: 1500,
@@ -104,7 +111,7 @@ const LoginPage = () => {
           Login
         </Button>
         <div className="flex flex-col space-y-2">
-          <Link href={"/register"} className="text-[#442288]">
+          <Link href={"/register"} className="text-[#442288] space-x-1">
             Don&#39;t owner account?
             <span className="underline">Register here!</span>
           </Link>

@@ -1,12 +1,18 @@
-import { ILoginInput, IRegisterInput } from "../interface/index";
+import { v4 as uuid } from "uuid";
+import {
+  ICategory,
+  IFormInputs,
+  ILoginInput,
+  IRegisterInput,
+} from "../interface/index";
 
 export const REGISTER_FORM: IRegisterInput[] = [
   {
-    name: "username",
-    placeholder: "الاسم الخاص بك ..",
+    name: "name",
+    placeholder: "Your Name",
     type: "text",
     forl: "name",
-    placel: "الاسم ثلاثي",
+    placel: "Your Name",
     validation: {
       required: true,
       minLength: 5,
@@ -14,10 +20,10 @@ export const REGISTER_FORM: IRegisterInput[] = [
   },
   {
     name: "email",
-    placeholder: "الايميل الخاص بك ..",
+    placeholder: "Your Email",
     type: "email",
     forl: "email",
-    placel: "البريد الإلكتروني",
+    placel: "Your Email",
     validation: {
       required: true,
       pattern: /^[^@]+@[^@]+\.[^@ .]{2,}$/,
@@ -25,10 +31,10 @@ export const REGISTER_FORM: IRegisterInput[] = [
   },
   {
     name: "password",
-    placeholder: "كلمة السر ..",
+    placeholder: "Your Password",
     type: "password",
     forl: "password",
-    placel: "كلمة المرور",
+    placel: "Your Password",
     validation: {
       required: true,
       minLength: 6,
@@ -38,7 +44,7 @@ export const REGISTER_FORM: IRegisterInput[] = [
 
 export const LOGIN_FORM: ILoginInput[] = [
   {
-    name: "identifier",
+    name: "email",
     placeholder: "Your Email ...",
     type: "email",
     forl: "email",
@@ -61,17 +67,36 @@ export const LOGIN_FORM: ILoginInput[] = [
   },
 ];
 
-export const LEARN_NAV_ITEMS = [
+export const formInputList: IFormInputs[] = [
   {
-    text: "الرئيسية",
-    to: "/dashboard",
+    id: "title",
+    type: "text",
+    name: "title",
+    label: "Todo Title",
   },
   {
-    text: "المستخدمين",
-    to: "/dashboard/users",
+    id: "description",
+    type: "text",
+    name: "description",
+    label: "Todo Description",
+  },
+];
+
+export const categories: ICategory[] = [
+  {
+    id: uuid(),
+    name: "School",
   },
   {
-    text: "الكورسات",
-    to: "/dashboard/courses",
+    id: uuid(),
+    name: "Study",
+  },
+  {
+    id: uuid(),
+    name: "Volley",
+  },
+  {
+    id: uuid(),
+    name: "Developing",
   },
 ];

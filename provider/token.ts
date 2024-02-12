@@ -1,8 +1,8 @@
 "use client";
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IToken } from "../../interface";
-import { RootState } from "../store";
+import { IToken } from "../src/interface";
+import { RootState } from "./store";
 import Cookies from "universal-cookie";
 
 interface TokenState {
