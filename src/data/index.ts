@@ -3,6 +3,7 @@ import {
   ICategory,
   IFormInputs,
   ILoginInput,
+  IProfileInput,
   IRegisterInput,
 } from "../interface/index";
 
@@ -79,6 +80,20 @@ export const formInputList: IFormInputs[] = [
     type: "text",
     name: "description",
     label: "Todo Description",
+  },
+];
+
+export const PROFILE_FORM: IProfileInput[] = [
+  {
+    name: "profileURL",
+    placeholder: "Your Profile URL ...",
+    type: "text",
+    forl: "profile",
+    placel: "Your Profile URL ...",
+    validation: {
+      required: true,
+      minLength: 6,
+    },
   },
 ];
 

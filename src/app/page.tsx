@@ -26,6 +26,7 @@ import Select from "../../components/schemas/Select";
 import { todoValidation } from "@/validation";
 import toast from "react-hot-toast";
 import { ITodoNameSchema } from "@/types";
+import { onGenerateTodos } from "@/utils/functions";
 
 export default function Home() {
   const defaultTodoObj: ITodo = {
@@ -76,8 +77,6 @@ export default function Home() {
     getTodos();
   }, [token]);
 
-  console.log(todos);
-
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -107,15 +106,6 @@ export default function Home() {
   );
   const closeConfirmModal = () => setIsOpenConfirmModal(false);
 
-  const onChangeEditHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setTodoToEdit((prevTodoToEdit) => ({
-      ...prevTodoToEdit,
-      [name]: value,
-    }));
-    setErrors({ ...errors, [name]: "" });
-  };
-
   const onEditCancel = () => {
     setTodo(defaultTodoObj);
     closeEditModal();
@@ -124,6 +114,15 @@ export default function Home() {
   const onCancel = () => {
     setTodo(defaultTodoObj);
     closeModal();
+  };
+
+  const onChangeEditHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setTodoToEdit((prevTodoToEdit) => ({
+      ...prevTodoToEdit,
+      [name]: value,
+    }));
+    setErrors({ ...errors, [name]: "" });
   };
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -141,7 +140,7 @@ export default function Home() {
     const errors = todoValidation({
       title,
       description,
-      category: selectedCategory.name,
+      category: categories[1].name,
     });
 
     const hasErrorMsg =
@@ -161,6 +160,7 @@ export default function Home() {
     axiosInstance
       .post("/todos", { ...todoAdd, category: selectedCategory.name })
       .then((response) => {
+        setTodos((prevTodos) => [...prevTodos, response.data]);
         setTodoAdd(defaultTodoAddObj);
         closeModal();
         toast.success("Todo is added to List!", {
@@ -321,8 +321,13 @@ export default function Home() {
     <>
       <main className="flex min-h-screen flex-col items-center py-1 px-24">
         <div className="w-full flex flex-row justify-between items-center pb-10">
-          <h3 className="text-lg font-semibold">Your Todos:</h3>
-          <Button onClick={() => openModal()}>Add Todo</Button>
+          <h3 className="text-lg font-semibold">
+            Your Todos ( {todos.length} ) :
+          </h3>
+          <div className="flex flex-row gap-2">
+            <Button onClick={() => openModal()}>Add Todo</Button>
+            {/* <Button onClick={() => onGenerateTodos()}>GenerateTodos</Button> */}
+          </div>
         </div>
         {displayTodos}
       </main>

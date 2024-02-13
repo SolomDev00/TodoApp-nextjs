@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 
 // ** Cookies
 const cookie = new Cookies();
-const token = cookie.get("userLogged");
+const { token } = cookie.get("userLogged");
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:9999",

@@ -50,7 +50,7 @@ const LoginPage = () => {
       );
       console.log(resData);
       dispatch(setToken(resData.token));
-      cookie.set("userLogged", resData.token);
+      cookie.set("userLogged", resData);
       if (status === 200 || 201) {
         toast.success("Login is done, you will navigate after 2 seconds!", {
           position: "bottom-center",

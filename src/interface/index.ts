@@ -26,6 +26,19 @@ export interface ILoginInput {
   };
 }
 
+export interface IProfileInput {
+  name: "profileURL";
+  placeholder: string;
+  type: string;
+  forl: string;
+  placel: string;
+  validation: {
+    pattern?: RegExp;
+    required?: boolean;
+    minLength?: number;
+  };
+}
+
 export interface IErrorResponse {
   message?: string[];
   error: {
@@ -60,6 +73,11 @@ export interface IToken {
   user: {
     username: string;
   };
+}
+
+export interface IProfileURL {
+  name: string;
+  imageURL: string;
 }
 
 export interface ICategory {

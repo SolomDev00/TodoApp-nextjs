@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import tokenReducer from "./token";
+import profileReducer from "./profileURL";
 import { useDispatch } from "react-redux";
 
 const store = configureStore({
   reducer: {
     token: tokenReducer,
+    profile: profileReducer,
   },
 });
 

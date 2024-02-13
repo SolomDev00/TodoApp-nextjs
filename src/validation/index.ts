@@ -31,6 +31,18 @@ export const loginSchema = yup
   })
   .required();
 
+export const profileSchema = yup
+  .object({
+    profileURL: yup
+      .string()
+      .required("URL is required!")
+      .matches(
+        /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/,
+        "URL address is not Valid!"
+      ),
+  })
+  .required();
+
 export const todoSchema = yup
   .object({
     title: yup.string().required("Title is required!"),

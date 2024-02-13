@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Button from "../../../components/schemas/Button";
 import Input from "../../../components/schemas/Input";
-import { LOGIN_FORM } from "../../data";
+import { PROFILE_FORM } from "../../data";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputErrorMessage from "../../../components/InputErrorMessage";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { loginSchema } from "../../validation";
+import { profileSchema } from "../../validation";
 import axiosInstance from "../../config/axios.config";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -16,11 +16,10 @@ import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAppDispatch } from "../../../provider/store";
-import { setToken } from "../../../provider/token";
+import { setProfileURL } from "../../../provider/profileURL";
 
 interface IFormInput {
-  email: string;
-  password: string;
+  profileURL: string;
 }
 
 const ProfilePage = () => {
@@ -37,7 +36,7 @@ const ProfilePage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(profileSchema),
   });
 
   // ** Handlers
@@ -45,20 +44,20 @@ const ProfilePage = () => {
     setIsLoading(true);
     try {
       const { status, data: resData } = await axiosInstance.post(
-        "/auth/login",
+        "/linkedin/scrape",
         data
       );
       console.log(resData);
-      dispatch(setToken(resData.token));
-      cookie.set("userLogged", resData.token);
+      dispatch(setProfileURL(resData));
+      cookie.set("userLoggedProfile", resData);
       if (status === 200 || 201) {
-        toast.success("Login is done, you will navigate after 2 seconds!", {
+        toast.success("Active is done, you will navigate after 3 seconds!", {
           position: "bottom-center",
           duration: 4000,
         });
         setTimeout(() => {
-          router.push("/");
-        }, 2000);
+          router.push("/profile");
+        }, 3000);
       }
     } catch (error) {
       console.log(error);
@@ -66,10 +65,7 @@ const ProfilePage = () => {
       const message =
         errorObj.response?.data.error.details?.message ||
         errorObj.response?.data.message;
-      toast.error(`Login failed: ${message}`);
-      if (message === "Invalid email or password") {
-        alert("Login failed: Invalid email or password");
-      }
+      toast.error(`Active failed: ${message}`);
       toast.error(`${message}`, {
         position: "bottom-center",
         duration: 1500,
@@ -80,7 +76,7 @@ const ProfilePage = () => {
   };
 
   // ** Renders
-  const renderLoginForm = LOGIN_FORM.map(
+  const renderProfileForm = PROFILE_FORM.map(
     ({ name, placeholder, type, forl, placel, validation }, idx) => (
       <div key={idx}>
         <div className="space-y-2 pb-1">
@@ -101,19 +97,21 @@ const ProfilePage = () => {
 
   return (
     <section className="w-[800px] mt-16 mx-auto">
-      <h2 className="text-[#3E1F7A] text-2xl pb-6">Hello Eslam Wael!</h2>
+      <h2 className="text-[#3E1F7A] text-2xl pb-6">
+        Hello Eslam Wael, You don&#39;t <strong>active your account!</strong>
+      </h2>
       <form
         className="w-[800px] space-y-3 mx-auto"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {renderLoginForm}
+        {renderProfileForm}
         <Button fullWidth isLoading={isLoading}>
-          Login
+          Submit
         </Button>
         <div className="flex flex-col space-y-2">
-          <Link href={"/register"} className="text-[#442288] space-x-1">
-            Don&#39;t owner account?
-            <span className="underline">Register here!</span>
+          <Link href={"https://linkedin.com/signup"} className="text-[#442288]">
+            Don&#39;t owner linkedin account?
+            <span className="underline ml-1">Create a new account!</span>
           </Link>
         </div>
       </form>
