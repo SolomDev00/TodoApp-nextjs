@@ -64,11 +64,7 @@ export default function Home() {
   useEffect(() => {
     const getTodos = async () => {
       try {
-        const response = await axiosInstance.get("/todos", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.get("/todos");
         setTodos(response.data);
       } catch (error) {
         console.error(error);
@@ -163,15 +159,7 @@ export default function Home() {
     }
 
     axiosInstance
-      .post(
-        "/todos",
-        { ...todoAdd, category: selectedCategory.name },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post("/todos", { ...todoAdd, category: selectedCategory.name })
       .then((response) => {
         setTodoAdd(defaultTodoAddObj);
         closeModal();
@@ -203,15 +191,7 @@ export default function Home() {
     }
 
     axiosInstance
-      .put(
-        `/todos/${todoToEdit._id}`,
-        { title, description, category },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .put(`/todos/${todoToEdit._id}`, { title, description, category })
       .then((response) => {
         const updatedProducts = [...todos];
         updatedProducts[todoToEditIdx] = response.data;
@@ -231,11 +211,7 @@ export default function Home() {
   const removeTodoHandler = () => {
     const { _id } = todoToEdit;
     axiosInstance
-      .delete(`/todos/${todoToEdit._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .delete(`/todos/${todoToEdit._id}`)
       .then(() => {
         setTodos((prevTodos) =>
           prevTodos.filter((todoItem) => todoItem._id !== _id)
@@ -351,7 +327,7 @@ export default function Home() {
         {displayTodos}
       </main>
 
-      {/* ADD Todo MODAL */}
+      {/* -------- ADD TODO MODAL -------- */}
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add a new Todo!">
         <form className="space-y-3" onSubmit={sumbitHandler}>
           {renderFormInputList}
@@ -377,11 +353,11 @@ export default function Home() {
         </form>
       </Modal>
 
-      {/* -------- EDIT PRODUCT MODAL -------- */}
+      {/* -------- EDIT TODO MODAL -------- */}
       <Modal
         isOpen={isOpenEdit}
         closeModal={closeEditModal}
-        title="Edit this Product!"
+        title="Edit this Todo!"
       >
         <form className="space-y-3" onSubmit={sumbitEditHandler}>
           {renderTodoToEditWithErrorMsg("title", "Todo Title", "title")}
@@ -409,12 +385,12 @@ export default function Home() {
         </form>
       </Modal>
 
-      {/* DELETE Todo CONFIRM MODAL */}
+      {/* -------- DELETE TODO CONFIRM MODAL -------- */}
       <Modal
         isOpen={isOpenConfirmModal}
         closeModal={closeConfirmModal}
-        title="Are you sure you want to remove this Todo from your Store?"
-        description="Deleting this todo will remove it permanently from your inventory. Any associated data, sales history, and other related information will also be deleted. Please make sure this is the intended action."
+        title="Are you sure you want to remove this Todo from your List?"
+        description="Deleting this todo will remove it permanently from your list. Any associated data, todos history, and other related information will also be deleted. Please make sure this is the intended action."
       >
         <div className="flex items-center space-x-3">
           <Button variant="danger" onClick={removeTodoHandler}>
