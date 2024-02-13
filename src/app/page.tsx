@@ -245,7 +245,7 @@ export default function Home() {
                 <BiCategory size={"22px"} />
                 {category}
               </h3>
-              <p className="layer gap-3">
+              <p className="layer gap-3 max-w-[710px]">
                 <BiClipboard size={"22px"} />
                 {description}
               </p>
@@ -326,7 +326,7 @@ export default function Home() {
           </h3>
           <div className="flex flex-row gap-2">
             <Button onClick={() => openModal()}>Add Todo</Button>
-            {/* <Button onClick={() => onGenerateTodos()}>GenerateTodos</Button> */}
+            <Button onClick={() => onGenerateTodos()}>GenerateTodos</Button>
           </div>
         </div>
         {displayTodos}
