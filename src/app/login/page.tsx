@@ -66,11 +66,7 @@ const LoginPage = () => {
       const message =
         errorObj.response?.data.error.details?.message ||
         errorObj.response?.data.message;
-      toast.error(`Login failed: ${message}`);
-      if (message === "Invalid email or password") {
-        alert("Login failed: Invalid email or password");
-      }
-      toast.error(`${message}`, {
+      toast.error(`Login failed: ${message}`, {
         position: "bottom-center",
         duration: 1500,
       });
@@ -111,9 +107,9 @@ const LoginPage = () => {
           Login
         </Button>
         <div className="flex flex-col space-y-2">
-          <Link href={"/register"} className="text-[#442288] space-x-1">
+          <Link href={"/register"} className="text-[#442288]">
             Don&#39;t owner account?
-            <span className="underline">Register here!</span>
+            <span className="underline  ml-1">Register here!</span>
           </Link>
         </div>
       </form>
